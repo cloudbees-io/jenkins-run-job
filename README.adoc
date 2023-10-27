@@ -1,0 +1,85 @@
+= CloudBees action: Run a Jenkins job
+
+Use this action to trigger a Jenkins job. 
+Jenkins is an open source automation server for CI/CD.
+
+== Inputs
+
+[cols="2a,1a,1a,3a",options="header"]
+.Input details
+|===
+
+| Input name
+| Data type
+| Required?
+| Description
+
+| `url`
+| String
+| Yes
+| The Jenkins server URL.
+
+| `username`
+| String
+| Yes
+| The Jenkins username.
+
+| `token`
+| String
+| Yes
+| The Jenkins token.
+
+| `job-name`
+| String
+| Yes
+| The Jenkins job name.
+
+| `test-type`
+| String
+| No
+| Specifies the test type for generating a job test report.
+Supported test types are JUnit (`junit`) and TestNG (`testng`).
+
+| `test-result-location`
+| String
+| No
+| Specifies the test report file location.
+Accepts pattern matching, such as `my-dir/*/my-file`.
+
+| `parameters`
+| JSON
+| No
+| Any additional parameters, formatted as JSON data in key/value pairs.
+|===
+
+== Usage example
+
+In your YAML file, add:
+
+[source,yaml]
+----
+jobs:
+  run-jenkins-job:
+    steps:
+      - name: Run Jenkins job
+        uses: cloudbees-io/jenkins-run-job@v2
+        with:
+          username: ${{ secrets.JENKINS_USERNAME }}
+          token: ${{ secrets.JENKINS_TOKEN }}
+          url: ${{ vars.JENKINS_URL }}
+          job-name: jenkins_job_name
+          test-type: Junit
+          test-result-location: junit-service*
+          parameters: '{"ENV_NAME":"TEST"}'
+
+----
+
+== License
+
+This code is made available under the 
+link:https://opensource.org/license/mit/[MIT license].
+
+== References
+
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
