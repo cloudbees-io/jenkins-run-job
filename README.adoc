@@ -38,7 +38,7 @@ Jenkins is an open source automation server for CI/CD.
 | String
 | No
 | Specifies the test type for generating a job test report.
-Supported test types are JUnit (`junit`) and TestNG (`testng`).
+Supported test types are JUnit (`junit`), TestNG (`testng`) and Go ('go').
 
 | `test-result-location`
 | String
@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.JENKINS_TOKEN }}
           url: ${{ vars.JENKINS_URL }}
           job-name: jenkins_job_name
-          test-type: Junit
+          test-type: Junit/TestNG/GO
           test-result-location: junit-service*
           parameters: '{"ENV_NAME":"TEST"}'
 
