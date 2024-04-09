@@ -38,7 +38,7 @@ Jenkins is an open source automation server for CI/CD.
 | String
 | No
 | Specifies the test type for generating a job test report.
-Supported test types are JUnit (`junit`), TestNG (`testng`) and Go ('go').
+Supported test types are JUnit (`junit`), TestNG (`testng`) and Go (go).
 
 | `test-result-location`
 | String
