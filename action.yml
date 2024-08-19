@@ -23,6 +23,12 @@ inputs:
   parameters:  # id of input
     description: 'parameters as json'
     default: '{}'
+
+outputs:
+  jenkins_output:
+    value: ${{ steps.invoke-jenkins-job.outputs.jenkins_output_var }}
+    description: Jenkins variable output
+    
 runs:
   using: composite
   steps:
