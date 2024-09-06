@@ -52,7 +52,25 @@ Accepts pattern matching, such as `my-dir/*/my-file`.
 | Any additional parameters, formatted as JSON data in key/value pairs.
 |===
 
-== Usage example
+== Outputs
+
+[cols="2a,1a,1a,3a",options="header"]
+.Output details
+|===
+
+| Output name
+| Data type
+| Required?
+| Description
+
+| `jenkins_output`
+| String
+| No
+| Pass parameters from Jenkins to the CloudBees platform.
+
+|===
+
+== Usage examples
 
 In your YAML file, add:
 
@@ -72,6 +90,44 @@ jobs:
           test-result-location: junit-service*
           parameters: '{"ENV_NAME":"TEST"}'
 
+----
+
+In the following example, output is passed from Jenkins to the platform:
+
+[source,yaml,role="default-expanded"]
+----
+jobs:
+  Jenkins-Output-Job:
+    outputs:
+      jenkins_output: ${{ steps.my-output-job.outputs.jenkins_output }}
+    steps:
+      - id: my-output-job
+        name: Run Jenkins job with output
+        uses: cloudbees-io/jenkins-run-job@v2
+        with:
+          url: ${{ vars.JENKINS_URL }}
+          username: ${{ secrets.JENKINS_USERNAME }}
+          token: ${{ secrets.JENKINS_TOKEN }}
+          job-name: jenkins_job_with_output_name
+
+      - id: expose-output
+        name: Expose Jenkins job output
+        uses: docker://exozet/jq:1.6-r0
+        if: ${{ fromJSON(steps.my-output-job.outputs.jenkins_output).TESTVAR != '19' }}
+        run: |
+          echo "BUILD_NUMBER: ${{ fromJSON(steps.my-output-job.outputs.jenkins_output).BUILD_NUMBER }}"
+          echo "TESTVAR: ${{ fromJSON(steps.my-output-job.outputs.jenkins_output).TESTVAR }}"
+
+  Print-Jenkins-Outputs:
+    if: ${{ fromJSON(needs.Jenkins-Output-Job.outputs.jenkins_output).TESTVAR != '19' }}
+    needs: [Jenkins-Output-Job]
+    steps:
+      - id: print-jenkins-output
+        uses: docker://exozet/jq:1.6-r0
+        name: Print Jenkins-Output-Job outputs
+        run: |
+          echo "BUILD_NUMBER: ${{ fromJSON(needs.Jenkins-Output-Job.outputs.jenkins_output).BUILD_NUMBER }}"
+          echo "TESTVAR: ${{ fromJSON(needs.Jenkins-Output-Job.outputs.jenkins_output).TESTVAR }}"
 ----
 
 == License
