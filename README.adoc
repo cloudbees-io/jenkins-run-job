@@ -47,7 +47,7 @@ Supported test types are JUnit (`junit`), TestNG (`testng`) and Go (go).
 Accepts pattern matching, such as `my-dir/*/my-file`.
 
 | `parameters`
-| JSON
+| JSON string
 | No
 | Any additional parameters, formatted as JSON data in key/value pairs.
 |===
@@ -64,11 +64,17 @@ Accepts pattern matching, such as `my-dir/*/my-file`.
 | Description
 
 | `jenkins_output`
-| String
+| JSON string
 | No
-| Pass parameters from Jenkins to the CloudBees platform.
+| A JSON string containing the output key/values exposed by the invoked Jenkins pipeline.^<<footnote,[1]>>^
 
 |===
+[#footnote]
+^[1]^ You must parse each output parameter in the following format:
+
+`fromJSON(steps.<STEP-ID>.outputs.jenkins_output).<OUTPUT_PARAMETER>`
+
+Replace <STEP_ID> with your step ID, and <OUTPUT_PARAMETER> with your parameter.
 
 == Usage examples
 
@@ -92,7 +98,23 @@ jobs:
 
 ----
 
-In the following example, output is passed from Jenkins to the platform:
+=== Using output from Jenkins
+
+In the following example, output is passed from Jenkins to the platform.
+
+The jenkinsfile below is used to define the outputs:
+
+[source,groovy,role="default-expanded"]
+----
+node {
+    stage('Build') {
+        env.BUILD_NUMBER="1"
+        env.TESTVAR="Test"
+    }
+}
+----
+
+The platform workflow file below prints the `BUILD_NUMBER` and `TESTVAR` outputs from Jenkins:
 
 [source,yaml,role="default-expanded"]
 ----
