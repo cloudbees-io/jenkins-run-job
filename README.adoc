@@ -74,7 +74,7 @@ Accepts pattern matching, such as `my-dir/*/my-file`.
 
 `fromJSON(steps.<STEP-ID>.outputs.jenkins_output).<OUTPUT_PARAMETER>`
 
-Replace <STEP_ID> with your step ID, and <OUTPUT_PARAMETER> with your parameter.
+Replace `<STEP_ID>` with your step ID, and `<OUTPUT_PARAMETER>` with your parameter.
 
 == Usage examples
 
