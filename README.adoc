@@ -47,12 +47,36 @@ Supported test types are JUnit (`junit`), TestNG (`testng`) and Go (go).
 Accepts pattern matching, such as `my-dir/*/my-file`.
 
 | `parameters`
-| JSON
+| JSON string
 | No
 | Any additional parameters, formatted as JSON data in key/value pairs.
 |===
 
-== Usage example
+== Outputs
+
+[cols="2a,1a,1a,3a",options="header"]
+.Output details
+|===
+
+| Output name
+| Data type
+| Required?
+| Description
+
+| `jenkins_output`
+| JSON string
+| No
+| A JSON string containing the output key/values exposed by the invoked Jenkins pipeline.^<<footnote,[1]>>^
+
+|===
+[#footnote]
+^[1]^ You must parse each output parameter in the following format:
+
+`fromJSON(steps.<STEP-ID>.outputs.jenkins_output).<OUTPUT_PARAMETER>`
+
+Replace `<STEP_ID>` with your step ID, and `<OUTPUT_PARAMETER>` with your parameter.
+
+== Usage examples
 
 In your YAML file, add:
 
@@ -74,6 +98,60 @@ jobs:
 
 ----
 
+=== Using output from Jenkins
+
+In the following example, output is passed from Jenkins to the platform.
+
+The jenkinsfile below is used to define the outputs:
+
+[source,groovy,role="default-expanded"]
+----
+node {
+    stage('Build') {
+        env.BUILD_NUMBER="1"
+        env.TESTVAR="Test"
+    }
+}
+----
+
+The platform workflow file below prints the `BUILD_NUMBER` and `TESTVAR` outputs from Jenkins:
+
+[source,yaml,role="default-expanded"]
+----
+jobs:
+  Jenkins-Output-Job:
+    outputs:
+      jenkins_output: ${{ steps.my-output-job.outputs.jenkins_output }}
+    steps:
+      - id: my-output-job
+        name: Run Jenkins job with output
+        uses: cloudbees-io/jenkins-run-job@v2
+        with:
+          url: ${{ vars.JENKINS_URL }}
+          username: ${{ secrets.JENKINS_USERNAME }}
+          token: ${{ secrets.JENKINS_TOKEN }}
+          job-name: jenkins_job_with_output_name
+
+      - id: expose-output
+        name: Expose Jenkins job output
+        uses: docker://exozet/jq:1.6-r0
+        if: ${{ fromJSON(steps.my-output-job.outputs.jenkins_output).TESTVAR != '19' }}
+        run: |
+          echo "BUILD_NUMBER: ${{ fromJSON(steps.my-output-job.outputs.jenkins_output).BUILD_NUMBER }}"
+          echo "TESTVAR: ${{ fromJSON(steps.my-output-job.outputs.jenkins_output).TESTVAR }}"
+
+  Print-Jenkins-Outputs:
+    if: ${{ fromJSON(needs.Jenkins-Output-Job.outputs.jenkins_output).TESTVAR != '19' }}
+    needs: [Jenkins-Output-Job]
+    steps:
+      - id: print-jenkins-output
+        uses: docker://exozet/jq:1.6-r0
+        name: Print Jenkins-Output-Job outputs
+        run: |
+          echo "BUILD_NUMBER: ${{ fromJSON(needs.Jenkins-Output-Job.outputs.jenkins_output).BUILD_NUMBER }}"
+          echo "TESTVAR: ${{ fromJSON(needs.Jenkins-Output-Job.outputs.jenkins_output).TESTVAR }}"
+----
+
 == License
 
 This code is made available under the 
@@ -81,5 +159,5 @@ link:https://opensource.org/license/mit/[MIT license].
 
 == References
 
-* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
-* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/actions[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[the CloudBees platform].
