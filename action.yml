@@ -2,15 +2,19 @@ apiVersion: automation.cloudbees.io/v1alpha1
 kind: action
 name: jenkins build actions
 inputs:
+  integration-name:
+    description: 'integration name'
+    required: false
+    default: ''
   url:  # id of input
     description: 'jenkins url'
-    required: true
+    required: false
   username:  # id of input
     description: 'user name'
-    required: true
+    required: false
   token:  # id of input
     description: 'token'
-    required: true
+    required: false
   job-name:  # id of input
     description: 'job name'
     required: true
@@ -34,10 +38,10 @@ runs:
   steps:
     - id: invoke-jenkins-job
       name: invoke-jenkins-job
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-9fdc55fdbcb390fc029ae2b718913eed38fa78e0
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-91e08821c7743e2f34ad554578a6bc2cf4e409d6
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}"}}'
+        CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}","url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}"}}'
         RUN_ID: ${{ cloudbees.run_id }}
         JOB_ID: ${{ job.id }}
         STEP_ID: ${{step.internal.id}}
