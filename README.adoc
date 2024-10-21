@@ -14,20 +14,25 @@ Jenkins is an open source automation server for CI/CD.
 | Required?
 | Description
 
+| `integration-name`
+| String
+| No
+| The Plugin Integration name. Note: If this is provided url/username/token fields will be ignored.
+
 | `url`
 | String
-| Yes
-| The Jenkins server URL.
+| No
+| The CloudBees CI server URL. Note: Only required if integration-name is empty.
 
 | `username`
 | String
-| Yes
-| The Jenkins username.
+| No
+| The CloudBees CI username. Note: Only required if integration-name is empty.
 
 | `token`
 | String
-| Yes
-| The Jenkins token.
+| No
+| The CloudBees CI token. Note: Only required if integration-name is empty.
 
 | `job-name`
 | String
@@ -96,6 +101,22 @@ jobs:
           test-result-location: junit-service*
           parameters: '{"ENV_NAME":"TEST"}'
 
+----
+== Usage example for plugin integration
+
+In your YAML file, add:
+
+[source,yaml]
+----
+jobs:
+  my-jenkins-plugin-job:
+    steps:
+    - name: Run a CloudBees CI job via plugin
+      uses: cloudbees-io/jenkins-run-job@v2
+      with:
+        integration-name: ${{ vars.JENKINS_INTEGRATION_NAME }}
+        job-name: "Integration_Job_Name"
+        parameters: '{"BRANCH_NAME":"main","ENV_NAME":"stage"}'
 ----
 
 === Using output from Jenkins
