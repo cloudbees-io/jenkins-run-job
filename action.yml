@@ -41,7 +41,7 @@ runs:
       uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-91e08821c7743e2f34ad554578a6bc2cf4e409d6
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}",{"url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}"}}'
+        CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}","url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}"}}'
         RUN_ID: ${{ cloudbees.run_id }}
         JOB_ID: ${{ job.id }}
         STEP_ID: ${{step.internal.id}}
