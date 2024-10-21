@@ -8,13 +8,13 @@ inputs:
     default: ''
   url:  # id of input
     description: 'jenkins url'
-    required: true
+    required: false
   username:  # id of input
     description: 'user name'
-    required: true
+    required: false
   token:  # id of input
     description: 'token'
-    required: true
+    required: false
   job-name:  # id of input
     description: 'job name'
     required: true
