@@ -42,8 +42,7 @@ Jenkins is an open source automation server for CI/CD.
 | `test-type`
 | String
 | No
-| Specifies the test type for generating a job test report.
-Supported test types are JUnit (`junit`), TestNG (`testng`) and Go (go).
+| Specifies the test type for generating a job test report. Supported test types are JUnit (`junit`), TestNG (`testng`), MSTest (`mstest`), ProdPerfect (`prodperfect`), Jmeter (`jmeter`), Selenium (`selenium`), Tosca (`tosca`), Go (`go`), Jest (`jtest`), and Playwright (`playwright`).
 
 | `test-result-location`
 | String
