@@ -64,12 +64,10 @@ Accepts pattern matching, such as `my-dir/*/my-file`.
 
 | Output name
 | Data type
-| Required?
 | Description
 
 | `jenkins_output`
 | JSON string
-| No
 | A JSON string containing the output key/values exposed by the invoked Jenkins pipeline.^<<footnote,[1]>>^
 
 |===
