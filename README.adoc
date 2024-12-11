@@ -58,18 +58,16 @@ Accepts pattern matching, such as `my-dir/*/my-file`.
 
 == Outputs
 
-[cols="2a,1a,1a,3a",options="header"]
+[cols="2a,1a,3a",options="header"]
 .Output details
 |===
 
 | Output name
 | Data type
-| Required?
 | Description
 
 | `jenkins_output`
 | JSON string
-| No
 | A JSON string containing the output key/values exposed by the invoked Jenkins pipeline.^<<footnote,[1]>>^
 
 |===
