@@ -38,7 +38,7 @@ runs:
   steps:
     - id: invoke-jenkins-job
       name: invoke-jenkins-job
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-44ff3d71dff1d6a9cf44df11945c0b6acf8cb4d3 
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-8ea57645efa3fd2a3067cc0069471cb1871841c4 
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}","url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}"}}'
