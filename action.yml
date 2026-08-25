@@ -50,4 +50,14 @@ runs:
       run: |
         set -x
         cd /app
-        ./jenkins_actions_app invoke -b $CONFIG_JSON
+        # Strip newlines that YAML block scalar inputs append to parameters value
+        { set +x; } 2>/dev/null
+        IFS=$(printf '\n_'); IFS="${IFS%_}"
+        set -f
+        set -- $CONFIG_JSON
+        unset IFS
+        set +f
+        _cfg=''
+        for _p do _cfg="${_cfg}${_p}"; done
+        set -x
+        ./jenkins_actions_app invoke -b "$_cfg"
