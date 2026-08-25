@@ -50,7 +50,7 @@ runs:
       run: |
         set -x
         cd /app
-        # Strip newlines that YAML block scalar inputs append to parameters value
+        # Strip newlines that YAML block scalar inputs append to the parameter value
         { set +x; } 2>/dev/null
         IFS=$(printf '\n_'); IFS="${IFS%_}"
         set -f
