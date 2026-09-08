@@ -54,6 +54,12 @@ Accepts pattern matching, such as `my-dir/*/my-file`.
 | JSON string
 | No
 | Any additional parameters, formatted as JSON data in key/value pairs.
+
+| `treat-unstable-as-success`
+| Boolean
+| No
+| Specifies whether a Jenkins `UNSTABLE` build result is treated as a success.
+Default is `false`, which fails the step when the Jenkins build is unstable.
 |===
 
 == Outputs

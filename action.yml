@@ -27,6 +27,9 @@ inputs:
   parameters:  # id of input
     description: 'parameters as json'
     default: '{}'
+  treat-unstable-as-success:
+    description: 'If true, treat Jenkins UNSTABLE build result as success'
+    default: 'false'
 
 outputs:
   jenkins_output:
@@ -41,7 +44,7 @@ runs:
       uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-fcfa284271d08152625d992bac2aa5421b7b73a2
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}","url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}"}}'
+        CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}","url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}","treatUnstableAsSuccess":"${{ inputs.treat-unstable-as-success }}"}}'
         RUN_ID: ${{ cloudbees.run_id }}
         JOB_ID: ${{ job.id }}
         STEP_ID: ${{step.internal.id}}
