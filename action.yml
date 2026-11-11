@@ -2,10 +2,6 @@ apiVersion: automation.cloudbees.io/v1alpha1
 kind: action
 name: jenkins build actions
 inputs:
-  integration-name:
-    description: 'integration name'
-    required: false
-    default: ''
   url:  # id of input
     description: 'jenkins url'
     required: false
@@ -44,7 +40,7 @@ runs:
       uses: docker://public.ecr.aws/l7o7z1g8/actions/jenkins-actions:main-1c564d7d1379957bc81580efc53bf33fa0828810
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"integrationName":"${{ inputs.integration-name }}","url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}","treatUnstableAsSuccess":"${{ inputs.treat-unstable-as-success }}"}}'
+        CONFIG_JSON: '{"metaInfo":{"url":"${{ inputs.url }}","toolType":"JENKINS","username":"${{ inputs.username }}","token":"${{ inputs.token }}","jobName":"${{ inputs.job-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}","parameters":${{ inputs.parameters }},"commitId":"${{ cloudbees.scm.sha }}","treatUnstableAsSuccess":"${{ inputs.treat-unstable-as-success }}"}}'
         RUN_ID: ${{ cloudbees.run_id }}
         JOB_ID: ${{ job.id }}
         STEP_ID: ${{step.internal.id}}
